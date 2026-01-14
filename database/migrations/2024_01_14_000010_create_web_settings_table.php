@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('web_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique()->nullable();
-            $table->string('password');
-            $table->enum('role', ['admin', 'santri'])->default('santri');
-            $table->rememberToken();
+            $table->string('nama_sekolah');
+            $table->string('logo')->nullable();
+            $table->string('poster')->nullable();
+            $table->string('wa_kontak');
+            $table->text('alamat_sekolah');
+            $table->string('no_rekening');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('web_settings');
     }
 };

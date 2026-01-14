@@ -331,21 +331,59 @@ text-decoration: underline;
 <h5 class="fw-bold text-navy mb-0">LOGIN SANTRIWATI</h5>
 </div>
 <div class="card-body p-4">
-<form>
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<strong>Login Gagal!</strong> {{ $errors->first() }}
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+<form action="{{ route('santri.login') }}" method="POST">
+@csrf
 <div class="mb-3">
 <label class="form-label">NISN</label>
-<input type="text" class="form-control" placeholder="Masukkan NISN">
+<input type="text" name="username" id="loginNisn" class="form-control @error('username') is-invalid @enderror" placeholder="Masukkan NISN" value="{{ request()->get('nisn') }}">
+@error('username')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 <div class="mb-4">
 <label class="form-label">KATA SANDI</label>
 <div class="input-group">
-<input type="password" class="form-control border-end-0" id="loginPass" placeholder="Password">
+<input type="password" name="password" class="form-control border-end-0 @error('password') is-invalid @enderror" id="loginPass" placeholder="Password" value="{{ request()->get('pass') }}">
 <span class="input-group-text bg-white border-start-0 cursor-pointer" onclick="togglePassword('loginPass', 'iconLoginPass')">
 <i class="fas fa-eye text-muted" id="iconLoginPass"></i>
 </span>
 </div>
+@error('password')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 </div>
 <button type="submit" class="btn btn-orange w-100 mb-3">MASUK APLIKASI</button>
+
+<script>
+    // Auto-fill and focus jika ada parameter NISN dari registrasi
+    window.addEventListener('load', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('nisn') && urlParams.get('nisn')) {
+            const loginSection = document.querySelector('.card-custom');
+            if (loginSection) {
+                loginSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            document.getElementById('loginNisn').focus();
+        }
+    });
+    
+    // Toggle password visibility
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
 </form>
 </div>
 </div>
@@ -374,7 +412,19 @@ text-decoration: underline;
 <div class="card card-custom h-100 staggered-item">
 <div class="form-header"><i class="fas fa-edit me-2"></i> FORMULIR PENDAFTARAN</div>
 <div class="card-body p-4">
-<form>
+@if ($errors->any())
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+<strong>Pendaftaran Gagal!</strong>
+<ul class="mb-0 mt-2">
+@foreach ($errors->all() as $error)
+<li>{{ $error }}</li>
+@endforeach
+</ul>
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+<form action="{{ route('santri.register') }}" method="POST">
+@csrf
 <div class="mb-3">
 <label class="form-label">TAHUN AJARAN</label>
 <select class="form-select" disabled>
@@ -393,62 +443,83 @@ text-decoration: underline;
 </div>
 <div class="mb-3">
 <label class="form-label">SEKOLAH/ PESANTREN ASAL</label>
-<input type="text" class="form-control" placeholder="Nama sekolah atau pesantren sebelumnya">
+<input type="text" name="sekolah_asal" class="form-control @error('sekolah_asal') is-invalid @enderror" placeholder="Nama sekolah atau pesantren sebelumnya" value="{{ old('sekolah_asal') }}">
+@error('sekolah_asal')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 <div class="row mb-3">
 <div class="col-md-6">
 <label class="form-label">JENIS PENDAFTARAN</label>
-<select class="form-select" id="jenisPendaftaran">
+<select class="form-select @error('jenis_pendaftaran') is-invalid @enderror" name="jenis_pendaftaran" id="jenisPendaftaran">
 <option selected disabled>-- Pilih --</option>
-<option value="baru">Santriwati Baru</option>
-<option value="pindahan">Santriwati Pindahan</option>
+<option value="baru" {{ old('jenis_pendaftaran') == 'baru' ? 'selected' : '' }}>Santriwati Baru</option>
+<option value="pindahan" {{ old('jenis_pendaftaran') == 'pindahan' ? 'selected' : '' }}>Santriwati Pindahan</option>
 </select>
+@error('jenis_pendaftaran')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 </div>
 <div class="col-md-6">
 <label class="form-label">JENJANG YANG DIPILIH</label>
-<select class="form-select" id="jenjangPendidikan">
+<select class="form-select @error('jenjang_pendidikan') is-invalid @enderror" name="jenjang_pendidikan" id="jenjangPendidikan">
 <option selected disabled>-- Pilih --</option>
-<option>SMP Boarding</option>
-<option>SMA Boarding</option>
+<option value="SMP" {{ old('jenjang_pendidikan') == 'SMP' ? 'selected' : '' }}>SMP Boarding</option>
+<option value="SMA" {{ old('jenjang_pendidikan') == 'SMA' ? 'selected' : '' }}>SMA Boarding</option>
 </select>
+@error('jenjang_pendidikan')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 </div>
 </div>
 <div class="mb-3">
 <label class="form-label">JALUR PENDAFTARAN</label>
-<select class="form-select" id="jalurPendaftaran">
+<select class="form-select @error('jalur_pendaftaran') is-invalid @enderror" name="jalur_pendaftaran" id="jalurPendaftaran">
 <option selected disabled>-- Pilih --</option>
-<option value="mandiri">Mandiri</option>
-<option value="kader">Kader</option>
-<option value="rekomendasi">Rekomendasi Cabang/Ranting</option>
+<option value="mandiri" {{ old('jalur_pendaftaran') == 'mandiri' ? 'selected' : '' }}>Mandiri</option>
+<option value="kader" {{ old('jalur_pendaftaran') == 'kader' ? 'selected' : '' }}>Kader</option>
+<option value="rekomendasi" {{ old('jalur_pendaftaran') == 'rekomendasi' ? 'selected' : '' }}>Rekomendasi Cabang/Ranting</option>
 </select>
+@error('jalur_pendaftaran')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 </div>
 <!-- Input Kader -->
-<div class="mb-3 conditional-field" id="kaderField">
+<div class="mb-3 conditional-field {{ old('jalur_pendaftaran') == 'kader' ? 'show' : '' }}" id="kaderField">
 <label class="form-label">STATUS KADER SAAT INI</label>
-<input type="text" class="form-control" placeholder="Status kader di organisasi (misal: Ketua IPM, Sekretaris PIP, dll)">
+<input type="text" name="status_kader" class="form-control @error('status_kader') is-invalid @enderror" placeholder="Status kader di organisasi (misal: Ketua IPM, Sekretaris PIP, dll)" value="{{ old('status_kader') }}">
+@error('status_kader')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 <!-- Input Rekomendasi -->
-<div class="mb-3 conditional-field" id="rekomendasiField">
+<div class="mb-3 conditional-field {{ old('jalur_pendaftaran') == 'rekomendasi' ? 'show' : '' }}" id="rekomendasiField">
 <label class="form-label">REKOMENDASI DARI</label>
-<input type="text" class="form-control" placeholder="Nama Cabang/Ranting 'Aisyiyah">
+<input type="text" name="rekomendasi_dari" class="form-control @error('rekomendasi_dari') is-invalid @enderror" placeholder="Nama Cabang/Ranting 'Aisyiyah" value="{{ old('rekomendasi_dari') }}">
+@error('rekomendasi_dari')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 <div class="mb-3">
 <label class="form-label">NISN</label>
-<input type="number" class="form-control" placeholder="10 Digit NISN">
+<input type="text" name="nisn" class="form-control @error('nisn') is-invalid @enderror" placeholder="10 Digit NISN" value="{{ old('nisn') }}">
+@error('nisn')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 <div class="mb-3">
 <label class="form-label">NAMA LENGKAP</label>
-<input type="text" class="form-control" placeholder="Nama Sesuai Ijazah">
+<input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" placeholder="Nama Sesuai Ijazah" value="{{ old('nama_lengkap') }}">
+@error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
+</div>
+<div class="mb-3">
+<label class="form-label">JENIS KELAMIN</label>
+<select class="form-select" name="jenis_kelamin" disabled>
+<option value="Perempuan" selected>Perempuan</option>
+</select>
+<input type="hidden" name="jenis_kelamin" value="Perempuan">
+</div>
+<div class="mb-3">
+<label class="form-label">EMAIL</label>
+<input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}">
+@error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 <div class="mb-3">
 <label class="form-label">BUAT PASSWORD</label>
 <div class="input-group">
-<input type="password" class="form-control border-end-0" id="regPass" placeholder="Min. 6 Karakter">
+<input type="password" name="password" class="form-control border-end-0 @error('password') is-invalid @enderror" id="regPass" placeholder="Min. 6 Karakter" value="{{ old('password') }}">
 <span class="input-group-text bg-white border-start-0 cursor-pointer" onclick="togglePassword('regPass', 'iconRegPass')">
 <i class="fas fa-eye text-muted" id="iconRegPass"></i>
 </span>
 </div>
 <div class="form-text small">Password ini digunakan untuk login selanjutnya.</div>
+@error('password')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 </div>
 <div class="mb-4">
 <label class="form-label">KODE VERIFIKASI</label>
@@ -458,7 +529,8 @@ text-decoration: underline;
 <i class="fas fa-sync-alt btn-refresh-captcha" onclick="refreshCaptcha()" title="Ganti Kode"></i>
 </div>
 <div class="col-md-7">
-<input type="text" class="form-control py-2" placeholder="Ketik kode disini">
+<input type="text" name="captcha" class="form-control py-2 @error('captcha') is-invalid @enderror" placeholder="Ketik kode disini" value="{{ old('captcha') }}">
+@error('captcha')<div class="invalid-feedback">{{ $message }}</div>@enderror
 </div>
 </div>
 </div>
@@ -791,6 +863,20 @@ behavior: 'smooth'
 }
 }
 });
+
+// Auto scroll to login if nisn parameter exists
+window.addEventListener('load', function() {
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('nisn')) {
+const loginCard = document.querySelector('.card-custom');
+if (loginCard) {
+setTimeout(() => {
+loginCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+document.getElementById('loginNisn').focus();
+}, 300);
+}
+}
+});
 // Conditional Fields Logic
 document.getElementById('jalurPendaftaran').addEventListener('change', function() {
 const kaderField = document.getElementById('kaderField');
@@ -817,70 +903,7 @@ item.classList.add('visible');
 }, 300);
 
 // Populate announcements dynamically with click functionality
-const announcements = [
-{ 
-  day: "04", month: "Jan", year: "2026", tag: "INFO TERBARU", 
-  title: "Pembukaan Pendaftaran Gelombang 3", 
-  desc: "Pendaftaran gelombang ketiga resmi dibuka mulai hari ini. Segera lengkapi berkas sebelum kuota penuh.",
-  fullContent: `<p>Pendaftaran gelombang ketiga resmi dibuka mulai hari ini, tanggal 4 Januari 2026. Calon santriwati baru dapat segera mengisi formulir pendaftaran online melalui website resmi PSB 'Aisyiyah Qur\`anic Boarding School.</p>
-<p>Kuota terbatas hanya untuk 100 santriwati baru per jenjang (SMP dan SMA). Segera lengkapi berkas administrasi dan lakukan pembayaran biaya pendaftaran sebelum kuota penuh atau masa pendaftaran berakhir pada tanggal 30 Januari 2026.</p>
-<p>Berkas yang harus dipersiapkan:</p>
-<ul>
-<li>Fotokopi ijazah & SKHUN (legalisir)</li>
-<li>Pas foto 3x4 (2 lembar)</li>
-<li>Akte kelahiran</li>
-<li>Kartu Keluarga</li>
-<li>Surat keterangan sehat dari dokter</li>
-</ul>`
-},
-{ 
-  day: "20", month: "Feb", year: "2026", tag: "AKADEMIK", 
-  title: "Jadwal Tes Seleksi Masuk Online", 
-  desc: "Tes seleksi akademik dan wawancara akan dilaksanakan secara daring. Cek kartu ujian di dashboard.",
-  fullContent: `<p>Tes seleksi akademik dan wawancara untuk calon santriwati baru akan dilaksanakan secara daring melalui platform Zoom Meeting.</p>
-<p><strong>Jadwal Tes Akademik:</strong></p>
-<ul>
-<li>SMP Boarding: Sabtu, 20 Februari 2026 pukul 08.00 - 10.00 WIB</li>
-<li>SMA Boarding: Sabtu, 20 Februari 2026 pukul 10.30 - 12.30 WIB</li>
-</ul>
-<p><strong>Jadwal Wawancara:</strong></p>
-<ul>
-<li>Minggu, 21 Februari 2026 pukul 08.00 - 16.00 WIB (sesi per keluarga)</li>
-</ul>
-<p>Calon santriwati wajib login ke dashboard pribadi untuk mencetak kartu ujian dan mendapatkan link Zoom Meeting. Pastikan koneksi internet stabil dan perangkat (laptop/smartphone) dalam kondisi baik.</p>`
-},
-{ 
-  day: "15", month: "Jan", year: "2026", tag: "PENTING", 
-  title: "Perubahan Jadwal Wawancara", 
-  desc: "Wawancara orang tua dialihkan ke sesi virtual via Zoom. Harap perhatikan email konfirmasi.",
-  fullContent: `<p>Sehubungan dengan situasi terkini, wawancara orang tua/wali calon santriwati yang semula direncanakan tatap muka, dialihkan menjadi sesi virtual melalui platform Zoom Meeting.</p>
-<p>Setiap keluarga akan mendapatkan email konfirmasi berisi:</p>
-<ul>
-<li>Link Zoom Meeting khusus</li>
-<li>ID Meeting dan Password</li>
-<li>Jadwal sesi wawancara spesifik</li>
-<li>Panduan teknis pelaksanaan wawancara virtual</li>
-</ul>
-<p>Harap perhatikan email yang terdaftar saat pendaftaran dan pastikan untuk hadir tepat waktu sesuai jadwal yang telah ditentukan. Wawancara virtual memiliki bobot penilaian yang sama dengan wawancara tatap muka.</p>`
-},
-{ 
-  day: "01", month: "Mar", year: "2026", tag: "KEGIATAN", 
-  title: "Open House Virtual", 
-  desc: "Ikuti open house virtual untuk mengenal lebih dekat lingkungan pesantren dan fasilitasnya.",
-  fullContent: `<p>'Aisyiyah Qur\`anic Boarding School Ponorogo mengundang calon santriwati dan orang tua/wali untuk mengikuti Open House Virtual yang akan diselenggarakan pada:</p>
-<p><strong>Tanggal:</strong> 1 Maret 2026<br>
-<strong>Waktu:</strong> 13.00 - 15.00 WIB<br>
-<strong>Platform:</strong> YouTube Live & Zoom Meeting</p>
-<p>Dalam acara ini, Anda akan mendapatkan kesempatan untuk:</p>
-<ul>
-<li>Mengenal profil lengkap 'Aisyiyah Qur\`anic Boarding School</li>
-<li>Tour virtual fasilitas asrama, ruang kelas, masjid, perpustakaan, dan laboratorium</li>
-<li>Sesi tanya jawab langsung dengan kepala sekolah dan panitia PSB</li>
-<li>Testimoni dari santriwati senior</li>
-</ul>
-<p>Daftar terlebih dahulu melalui link yang tersedia di dashboard pendaftaran Anda untuk mendapatkan link akses eksklusif.</p>`
-}
-];
+const announcements = {!! json_encode($announcements ?? []) !!};
 
 const wrapper = document.getElementById('announcementWrapper');
 announcements.forEach((ann, index) => {

@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('question_options', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique()->nullable();
-            $table->string('password');
-            $table->enum('role', ['admin', 'santri'])->default('santri');
-            $table->rememberToken();
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
+            $table->string('pilihan_teks');
+            $table->boolean('is_correct')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('question_options');
     }
 };

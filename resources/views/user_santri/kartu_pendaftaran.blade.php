@@ -1076,9 +1076,9 @@
                         <i class="fas fa-chevron-down ms-2 small"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 rounded-3">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2 text-muted"></i> Profil Saya</a></li>
+                        <li><a class="dropdown-item" href="{{ route('santri.profil') }}"><i class="fas fa-user me-2 text-muted"></i> Profil Saya</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger fw-bold" href="#"><i class="fas fa-sign-out-alt me-2"></i> Keluar</a></li>
+                        <li><form action="{{ route('santri.logout') }}" method="POST" style="display: inline;"><a class="dropdown-item text-danger fw-bold" onclick="this.closest('form').submit(); return false;"><i class="fas fa-sign-out-alt me-2"></i> Keluar</a>@csrf</form></li>
                     </ul>
                 </div>
             </div>
@@ -1089,23 +1089,26 @@
     <aside class="sidebar" id="sidebar">
         <div class="menu-category">Menu Utama</div>
         <nav class="nav flex-column">
-            <a href="#" class="nav-link-custom"><i class="fas fa-th-large"></i> Dashboard</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-file-signature"></i> Formulir Data</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-cloud-upload-alt"></i> Upload Berkas</a>
-            <a href="#" class="nav-link-custom active"><i class="fas fa-id-card"></i> Kartu Pendaftaran</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-file-contract"></i> Surat Pernyataan</a>
+            <a href="{{ route('santri.dashboard') }}" class="nav-link-custom"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="{{ route('santri.formulir') }}" class="nav-link-custom"><i class="fas fa-file-signature"></i> Formulir Data</a>
+            <a href="{{ route('santri.upload') }}" class="nav-link-custom"><i class="fas fa-cloud-upload-alt"></i> Upload Berkas</a>
+            <a href="{{ route('santri.kartu') }}" class="nav-link-custom active"><i class="fas fa-id-card"></i> Kartu Pendaftaran</a>
+            <a href="{{ route('santri.pernyataan') }}" class="nav-link-custom"><i class="fas fa-file-contract"></i> Surat Pernyataan</a>
         </nav>
 
         <div class="menu-category">Informasi</div>
         <nav class="nav flex-column">
-            <a href="#" class="nav-link-custom"><i class="fas fa-wallet"></i> Pembayaran</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-bullhorn"></i> Pengumuman</a>
+            <a href="{{ route('santri.pembayaran') }}" class="nav-link-custom"><i class="fas fa-wallet"></i> Pembayaran</a>
+            <a href="{{ route('santri.pengumuman') }}" class="nav-link-custom"><i class="fas fa-bullhorn"></i> Pengumuman</a>
         </nav>
 
         <div class="mt-auto pt-5">
-            <a href="#" class="btn btn-outline-light w-100 rounded-pill btn-sm opacity-75">
-                <i class="fas fa-sign-out-alt me-2"></i> Log Out
-            </a>
+            <form action="{{ route('santri.logout') }}" method="POST">
+                <button type="submit" class="btn btn-outline-light w-100 rounded-pill btn-sm opacity-75 border-0">
+                    <i class="fas fa-sign-out-alt me-2"></i> Log Out
+                </button>
+                @csrf
+            </form>
         </div>
     </aside>
 
@@ -1644,49 +1647,12 @@
             });
         });
 
-        // Status Pembayaran Data (simulasi)
-        let statusPembayaran = "pending"; // "pending", "success", "failed"
-        let biayaPendaftaran = 250000;
+        // Status Pembayaran Data (dari database)
+        let statusPembayaran = "{!! $statusPembayaran ?? 'pending' !!}"; // "pending", "success", "failed"
+        let biayaPendaftaran = {!! $biayaPendaftaran ?? 250000 !!};
         
-        // Data mata ujian
-        const mataUjianData = [
-            {
-                id: 1,
-                nama: "MATEMATIKA",
-                kode: "MTK-001",
-                waktu: "08.00 - 09.30 WIB",
-                jumlahSoal: "40 Soal Pilihan Ganda",
-                pengawas: "Ustadz Ahmad Fauzi, S.Pd.",
-                materi: "Aljabar, Geometri, Aritmatika",
-                link: "https://ujian.aqbs-ponorogo.ac.id/matematika/psb-2025-008",
-                status: "aktif",
-                waktuAktif: "15 Juli 2025, 07.30 WIB"
-            },
-            {
-                id: 2,
-                nama: "BAHASA INDONESIA",
-                kode: "BIND-002",
-                waktu: "09.45 - 11.15 WIB",
-                jumlahSoal: "50 Soal Pilihan Ganda",
-                pengawas: "Ustadzah Dewi Rahmawati, M.Pd.",
-                materi: "Membaca, Menulis, Tata Bahasa",
-                link: "https://ujian.aqbs-ponorogo.ac.id/bahasa-indonesia/psb-2025-008",
-                status: "aktif",
-                waktuAktif: "15 Juli 2025, 09.30 WIB"
-            },
-            {
-                id: 3,
-                nama: "ILMU PENGETAHUAN ALAM (IPA)",
-                kode: "IPA-003",
-                waktu: "11.30 - 12.30 WIB",
-                jumlahSoal: "30 Soal Pilihan Ganda",
-                pengawas: "Ustadz Muhammad Arif, S.Pd.",
-                materi: "Fisika, Biologi, Kimia Dasar",
-                link: "https://ujian.aqbs-ponorogo.ac.id/ipa/psb-2025-008",
-                status: "aktif",
-                waktuAktif: "15 Juli 2025, 11.15 WIB"
-            }
-        ];
+        // Data mata ujian dari database
+        const mataUjianData = {!! json_encode($mataUjianData ?? []) !!};
         
         // Update status pembayaran display
         function updateStatusPembayaran() {

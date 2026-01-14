@@ -1389,127 +1389,8 @@
         let selectedItems = new Set();
         let currentPageData = [];
 
-        // Initial data with full filtering capabilities
-        let berkasData = [
-            {
-                id: 1,
-                nama: "ANNISA RAHMAWATI",
-                jenjang: "SMP",
-                status: "Diterima",
-                tahun: "2026/2027",
-                gelombang: "Gelombang 2",
-                jalur: "Mandiri",
-                berkas: {
-                    kk: true,
-                    ijazah: true,
-                    akta: true,
-                    kip: true,
-                    bpjs: true
-                }
-            },
-            {
-                id: 2,
-                nama: "FATIMAH ZAHRA",
-                jenjang: "SMA",
-                status: "Terverifikasi",
-                tahun: "2026/2027",
-                gelombang: "Gelombang 2",
-                jalur: "Kader",
-                berkas: {
-                    kk: true,
-                    ijazah: false,
-                    akta: true,
-                    kip: false,
-                    bpjs: true
-                }
-            },
-            {
-                id: 3,
-                nama: "NURUL HUDA",
-                jenjang: "SMP",
-                status: "Daftar Ulang",
-                tahun: "2026/2027",
-                gelombang: "Gelombang 1",
-                jalur: "Mandiri",
-                berkas: {
-                    kk: true,
-                    ijazah: true,
-                    akta: true,
-                    kip: true,
-                    bpjs: false
-                }
-            },
-            {
-                id: 4,
-                nama: "SITI AISYAH",
-                jenjang: "SMA",
-                status: "Ditolak",
-                tahun: "2026/2027",
-                gelombang: "Gelombang 2",
-                jalur: "Mandiri",
-                berkas: {
-                    kk: true,
-                    ijazah: true,
-                    akta: false,
-                    kip: false,
-                    bpjs: true
-                }
-            },
-            {
-                id: 5,
-                nama: "ZAHRA NABILA",
-                jenjang: "SMP",
-                status: "Santriwati Aktif",
-                tahun: "2025/2026",
-                gelombang: "Gelombang 3",
-                jalur: "Kader",
-                berkas: {
-                    kk: true,
-                    ijazah: true,
-                    akta: true,
-                    kip: true,
-                    bpjs: true
-                }
-            }
-        ];
-
-        // Generate more sample data for pagination demonstration
-        function generateMoreData() {
-            const names = ["AMELIA PUTRI", "BINTANG NURAINI", "CANTIKA SARI", "DINDA AYU", "ELISA MAHARANI", 
-                         "FIRA ANDINI", "GITA MAHESWARI", "HANNAH FEBRIANA", "INDAH PERMATA", "JASMINE ALYA",
-                         "KIRANA DEWI", "LUTFIYAH HANUM", "MELATI SUKMA", "NADIA RAHMA", "OKTAVIA SALSABILA",
-                         "PUTRI ANANDA", "QONITA ZAHRA", "RARA SEKAR", "SASHA AMELIA", "TIARA KIRANA"];
-            
-            const jenjangs = ["SMP", "SMA"];
-            const statuses = ["Terverifikasi", "Diterima", "Daftar Ulang", "Santriwati Aktif", "Ditolak"];
-            const gelombangs = ["Gelombang 1", "Gelombang 2", "Gelombang 3"];
-            const jalurs = ["Mandiri", "Kader", "Rekomendasi"];
-            
-            for (let i = 6; i <= 305; i++) {
-                const name = names[Math.floor(Math.random() * names.length)] + " " + (i < 10 ? "0" + i : i);
-                const jenjang = jenjangs[Math.floor(Math.random() * jenjangs.length)];
-                const status = statuses[Math.floor(Math.random() * statuses.length)];
-                const gelombang = gelombangs[Math.floor(Math.random() * gelombangs.length)];
-                const jalur = jalurs[Math.floor(Math.random() * jalurs.length)];
-                
-                berkasData.push({
-                    id: i,
-                    nama: name,
-                    jenjang: jenjang,
-                    status: status,
-                    tahun: "2026/2027",
-                    gelombang: gelombang,
-                    jalur: jalur,
-                    berkas: {
-                        kk: Math.random() > 0.2,
-                        ijazah: Math.random() > 0.3,
-                        akta: Math.random() > 0.25,
-                        kip: Math.random() > 0.4,
-                        bpjs: Math.random() > 0.35
-                    }
-                });
-            }
-        }
+        // Data dari database
+        let berkasData = {!! json_encode($berkasData ?? []) !!};
 
         // Load data from URL hash if available
         function loadSavedData() {
@@ -1522,9 +1403,6 @@
                 } catch (error) {
                     console.error('Error loading saved ', error);
                 }
-            } else {
-                // Generate more data for demonstration if no saved data
-                generateMoreData();
             }
             applyFilters(); // Apply filters on initial load
         }

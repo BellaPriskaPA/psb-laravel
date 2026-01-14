@@ -1169,77 +1169,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Generate sample data (125 records)
-        function generateSampleData(count) {
-            const data = [];
-            const names = [
-                "Bebelll", "Siti Fatimah", "Annisa Rahmawati", "Maya Indah Sari", "Rahma Dewi",
-                "Nurul Hikmah", "Aisyah Putri", "Desi Ratnasari", "Fitriani", "Kartika Sari",
-                "Linda Wijaya", "Mega Pratiwi", "Nadia Utami", "Oktavia", "Putri Ayu",
-                "Rina Marlina", "Sari Dewi", "Tina Susanti", "Umi Kulsum", "Vina Amelia"
-            ];
-            
-            const jenjangList = ["SMP", "SMA", "SMK"];
-            const statusList = ["Belum Dicek", "Sudah Dicek", "Ditolak"];
-            const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-            const fileTypes = ["pdf", "jpg", "png", "jpeg"];
-            
-            // Sample image URLs for preview
-            const sampleImages = [
-                "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?w=800&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1544717305-2782549b5136?w=800&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w-800&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop"
-            ];
-            
-            for (let i = 1; i <= count; i++) {
-                const name = names[Math.floor(Math.random() * names.length)];
-                const jenjang = jenjangList[Math.floor(Math.random() * jenjangList.length)];
-                const day = Math.floor(Math.random() * 28) + 1;
-                const month = months[Math.floor(Math.random() * months.length)];
-                const year = 2025;
-                const fileType = fileTypes[Math.floor(Math.random() * fileTypes.length)];
-                const isImage = fileType !== "pdf";
-                
-                // Randomly choose between image and PDF
-                let formulirFile, suratFile;
-                let formulirUrl, suratUrl;
-                
-                if (isImage) {
-                    formulirFile = `formulir_${name.toLowerCase().replace(/\s+/g, '_')}_${i}.${fileType}`;
-                    suratFile = `surat_${name.toLowerCase().replace(/\s+/g, '_')}_${i}.${fileType}`;
-                    formulirUrl = sampleImages[Math.floor(Math.random() * sampleImages.length)];
-                    suratUrl = sampleImages[Math.floor(Math.random() * sampleImages.length)];
-                } else {
-                    formulirFile = `formulir_${name.toLowerCase().replace(/\s+/g, '_')}_${i}.pdf`;
-                    suratFile = `surat_${name.toLowerCase().replace(/\s+/g, '_')}_${i}.pdf`;
-                    formulirUrl = null;
-                    suratUrl = null;
-                }
-                
-                data.push({
-                    id: i,
-                    nisn: `1234567${i.toString().padStart(3, '0')}`,
-                    nama: name,
-                    jenjang: jenjang,
-                    tgl_upload: `${day} ${month} ${year}`,
-                    formulir_status: statusList[Math.floor(Math.random() * statusList.length)],
-                    surat_status: statusList[Math.floor(Math.random() * statusList.length)],
-                    formulir_file: formulirFile,
-                    surat_file: suratFile,
-                    formulir_url: formulirUrl,
-                    surat_url: suratUrl,
-                    file_type: fileType,
-                    is_image: isImage
-                });
-            }
-            
-            return data;
-        }
-
-        // Initial data
-        let berkasData = generateSampleData(125);
+        // Data dari database
+        let berkasData = {!! json_encode($berkasData ?? []) !!};
 
         // DOM Elements
         const formulirBody = document.getElementById('formulirBody');

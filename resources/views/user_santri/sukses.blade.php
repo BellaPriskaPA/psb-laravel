@@ -3,13 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sukses - Pendaftaran PSB Online</title>
-    
+    <title>Registrasi Berhasil - PSB Online</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <style>
+        :root {
+            --navy-primary: #002b4d;
+            --navy-secondary: #004070;
+            --orange-primary: #ff7f00;
+            --orange-hover: #e66a00;
+            --cyan-accent: #4dd0e1;
+            --bg-light: #f4f6f9;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--navy-primary) 0%, var(--navy-secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            padding: 60px 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 50px;
+            color: white;
+            animation: bounceIn 0.8s ease-out 0.2s both;
+        }
+        
+        @keyframes bounceIn {
+            from {
+                opacity: 0;
+                transform: scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        h1 {
+            color: var(--navy-primary);
+            font-weight: 800;
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background: var(--bg-light);
+            border: 2px solid var(--cyan-accent);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .info-label {
+            color: var(--navy-primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .info-value {
+            font-size: 1.3rem;
+            color: var(--navy-primary);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            word-break: break-all;
+        }
+        
+        .info-value:last-child {
+            margin-bottom: 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #856404;
+            font-size: 0.95rem;
+        }
+        
+        .warning-box strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .btn-group-custom {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-custom {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 30px;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--orange-primary) 0%, var(--orange-hover) 100%);
+            color: white;
+            border: none;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 127, 0, 0.3);
+            color: white;
+        }
+        
+        .btn-home {
+            background: white;
+            color: var(--navy-primary);
+            border: 2px solid var(--navy-primary);
+        }
+        
+        .btn-home:hover {
+            background: var(--navy-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-text {
+            color: #999;
+            font-size: 0.85rem;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 40px 25px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn-group-custom {
+                flex-direction: column;
+            }
+            
+            .btn-custom {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1>Registrasi Berhasil!</h1>
+        <p class="subtitle">Selamat, Anda telah terdaftar sebagai calon santri</p>
+        
+        <div class="info-box">
+            <span class="info-label"><i class="fas fa-id-card me-2"></i>NISN Anda</span>
+            <div class="info-value">{{ session('nisn') }}</div>
+            
+            <span class="info-label"><i class="fas fa-lock me-2"></i>Password Sementara</span>
+            <div class="info-value">{{ session('password') }}</div>
+        </div>
+        
+        <div class="warning-box">
+            <strong><i class="fas fa-exclamation-triangle me-2"></i>Penting!</strong>
+            <ul class="mb-0">
+                <li>Jangan bagikan NISN dan Password Anda kepada siapapun</li>
+                <li>Simpan informasi ini dengan aman</li>
+                <li>Anda dapat mengubah password setelah login pertama kali</li>
+            </ul>
+        </div>
+        
+        <div class="btn-group-custom">
+            <a href="{{ route('awal.index') }}?nisn={{ session('nisn') }}&pass={{ session('password') }}" class="btn btn-custom btn-login">
+                <i class="fas fa-sign-in-alt me-2"></i>Lanjut ke Login
+            </a>
+            <a href="{{ route('awal.index') }}" class="btn btn-custom btn-home">
+                <i class="fas fa-home me-2"></i>Kembali Utama
+            </a>
+        </div>
+        
+        <div class="footer-text">
+            <p class="mb-0">Halaman ini akan otomatis redirect dalam <span id="countdown">5</span> detik...</p>
+        </div>
+    </div>
+    
+    <script>
+        let countdown = 5;
+        setInterval(() => {
+            countdown--;
+            document.getElementById('countdown').textContent = countdown;
+            if (countdown === 0) {
+                window.location.href = "{{ route('awal.index') }}?nisn={{ session('nisn') }}&pass={{ session('password') }}";
+            }
+        }, 1000);
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
         :root {
             --navy-primary: #002b4d;    
             --orange-primary: #ff7f00;       
@@ -445,10 +696,10 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="#" class="btn-action btn-secondary-custom">
+                    <a href="{{ route('awal.index') }}" class="btn-action btn-secondary-custom">
                         <i class="fas fa-clock"></i> Lanjut Nanti
                     </a>
-                    <a href="#" class="btn-action btn-primary-custom">
+                    <a href="{{ route('awal.index') }}?nisn={{ session('nisn') }}&pass={{ session('password') }}" class="btn-action btn-primary-custom">
                         <i class="fas fa-arrow-right"></i> Lanjut Sekarang
                     </a>
                     <button id="downloadBtn" class="btn-action btn-download-custom">

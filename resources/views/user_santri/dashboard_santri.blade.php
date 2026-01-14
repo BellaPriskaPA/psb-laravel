@@ -325,9 +325,9 @@
                         <i class="fas fa-chevron-down ms-2 small"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-3 rounded-3">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2 text-muted"></i> Profil Saya</a></li>
+                        <li><a class="dropdown-item" href="{{ route('santri.profil') }}"><i class="fas fa-user me-2 text-muted"></i> Profil Saya</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item text-danger fw-bold" href="#"><i class="fas fa-sign-out-alt me-2"></i> Keluar</a></li>
+                        <li><form action="{{ route('santri.logout') }}" method="POST" style="display: inline;"><a class="dropdown-item text-danger fw-bold" onclick="this.closest('form').submit(); return false;"><i class="fas fa-sign-out-alt me-2"></i> Keluar</a>@csrf</form></li>
                     </ul>
                 </div>
             </div>
@@ -337,23 +337,26 @@
     <aside class="sidebar" id="sidebar">
         <div class="menu-category">Menu Utama</div>
         <nav class="nav flex-column">
-            <a href="#" class="nav-link-custom active"><i class="fas fa-th-large"></i> Dashboard</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-file-signature"></i> Formulir Data</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-cloud-upload-alt"></i> Upload Berkas</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-id-card"></i> Kartu Pendaftaran</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-file-contract"></i> Surat Pernyataan</a>
+            <a href="{{ route('santri.dashboard') }}" class="nav-link-custom active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="{{ route('santri.formulir') }}" class="nav-link-custom"><i class="fas fa-file-signature"></i> Formulir Data</a>
+            <a href="{{ route('santri.upload') }}" class="nav-link-custom"><i class="fas fa-cloud-upload-alt"></i> Upload Berkas</a>
+            <a href="{{ route('santri.kartu') }}" class="nav-link-custom"><i class="fas fa-id-card"></i> Kartu Pendaftaran</a>
+            <a href="{{ route('santri.pernyataan') }}" class="nav-link-custom"><i class="fas fa-file-contract"></i> Surat Pernyataan</a>
         </nav>
 
         <div class="menu-category">Informasi</div>
         <nav class="nav flex-column">
-            <a href="#" class="nav-link-custom"><i class="fas fa-wallet"></i> Pembayaran</a>
-            <a href="#" class="nav-link-custom"><i class="fas fa-bullhorn"></i> Pengumuman</a>
+            <a href="{{ route('santri.pembayaran') }}" class="nav-link-custom"><i class="fas fa-wallet"></i> Pembayaran</a>
+            <a href="{{ route('santri.pengumuman') }}" class="nav-link-custom"><i class="fas fa-bullhorn"></i> Pengumuman</a>
         </nav>
 
         <div class="mt-auto pt-5">
-            <a href="#" class="btn btn-outline-light w-100 rounded-pill btn-sm opacity-75">
-                <i class="fas fa-sign-out-alt me-2"></i> Log Out
-            </a>
+            <form action="{{ route('santri.logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-outline-light w-100 rounded-pill btn-sm opacity-75">
+                    <i class="fas fa-sign-out-alt me-2"></i> Log Out
+                </button>
+            </form>
         </div>
     </aside>
 
@@ -490,7 +493,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-sm btn-primary"><i class="fas fa-download me-2"></i> PDF</button>
+                    <button type="button" class="btn btn-sm btn-success" onclick="window.print()"><i class="fas fa-print me-2"></i> Cetak / PDF</button>
                 </div>
             </div>
         </div>
